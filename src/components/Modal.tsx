@@ -34,14 +34,10 @@ export interface ModalProps {
   labels: Labels
   dismissOnPress?: boolean
   preventOutsideInteraction?: boolean
-
-  easing(value: number): number
-
-  stop(): void
-
-  next(): void
-
-  prev(): void
+  easing: (value: number) => number
+  stop: () => void
+  next: () => void
+  prev: () => void
 }
 
 interface Layout {
@@ -195,9 +191,9 @@ export class Modal extends React.Component<ModalProps, State> {
       verticalPosition === 'bottom'
         ? tooltip.top
         : obj.top -
-        MARGIN -
-        135 -
-        (this.props.currentStep!.tooltipBottomOffset || 0)
+          MARGIN -
+          135 -
+          (this.props.currentStep!.tooltipBottomOffset || 0)
     const translateAnim = Animated.timing(this.state.tooltipTranslateY, {
       toValue,
       duration,
@@ -277,6 +273,7 @@ export class Modal extends React.Component<ModalProps, State> {
       maskOffset={this.props.maskOffset}
       borderRadius={this.props.borderRadius}
       dismissOnPress={this.props.dismissOnPress}
+      stop={this.props.stop}
     />
   )
 
@@ -316,10 +313,12 @@ export class Modal extends React.Component<ModalProps, State> {
   }
 
   renderNonInteractionPlaceholder() {
-    return this.props.preventOutsideInteraction ? <View
-      style={[StyleSheet.absoluteFill, styles.nonInteractionPlaceholder]} /> : null
+    return this.props.preventOutsideInteraction ? (
+      <View
+        style={[StyleSheet.absoluteFill, styles.nonInteractionPlaceholder]}
+      />
+    ) : null
   }
-
 
   render() {
     const containerVisible = this.state.containerVisible || this.props.visible
@@ -337,8 +336,6 @@ export class Modal extends React.Component<ModalProps, State> {
           onLayout={this.handleLayoutChange}
           pointerEvents='box-none'
         >
-
-
           {contentVisible && (
             <>
               {this.renderMask()}
