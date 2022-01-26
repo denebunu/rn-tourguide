@@ -33,6 +33,7 @@ export interface ModalProps {
   backdropColor: string
   labels: Labels
   dismissOnPress?: boolean
+  preventOutsideInteraction?: boolean
   easing: (value: number) => number
   stop: () => void
   next: () => void
@@ -74,6 +75,7 @@ export class Modal extends React.Component<ModalProps, State> {
     backdropColor: 'rgba(0, 0, 0, 0.4)',
     labels: {},
     isHorizontal: false,
+    preventOutsideInteraction: false,
   }
 
   layout?: Layout = {
@@ -291,6 +293,7 @@ export class Modal extends React.Component<ModalProps, State> {
           styles.tooltip,
           this.props.tooltipStyle,
           {
+            zIndex: 99,
             opacity,
             transform: [{ translateY: this.state.tooltipTranslateY }],
           },
@@ -307,6 +310,14 @@ export class Modal extends React.Component<ModalProps, State> {
         />
       </Animated.View>
     )
+  }
+
+  renderNonInteractionPlaceholder() {
+    return this.props.preventOutsideInteraction ? (
+      <View
+        style={[StyleSheet.absoluteFill, styles.nonInteractionPlaceholder]}
+      />
+    ) : null
   }
 
   render() {
@@ -328,6 +339,7 @@ export class Modal extends React.Component<ModalProps, State> {
           {contentVisible && (
             <>
               {this.renderMask()}
+              {this.renderNonInteractionPlaceholder()}
               {this.renderTooltip()}
             </>
           )}
