@@ -7,6 +7,7 @@ declare var __TEST__: boolean
 interface Props {
   name: string
   text: string
+  title: string
   order: number
   tourKey: string
   active?: boolean
@@ -71,7 +72,7 @@ export class ConnectedStep extends React.Component<Props> {
 
   measure() {
     if (typeof __TEST__ !== 'undefined' && __TEST__) {
-      return new Promise((resolve) =>
+      return new Promise(resolve =>
         resolve({
           x: 0,
           y: 0,
