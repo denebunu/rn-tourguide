@@ -10,7 +10,6 @@ export interface IStep {
   visible?: boolean
   target: any
   text: string
-  title: string
   wrapper: any
   shape?: Shape
   maskOffset?: number

@@ -7,7 +7,6 @@ interface Props {
   name: string
   order: number
   text: string
-  title: string
   tourKey: string
   shape?: Shape
   active?: boolean
