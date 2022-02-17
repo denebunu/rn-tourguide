@@ -5,6 +5,7 @@ import { TourGuideZone } from './TourGuideZone'
 
 export interface TourGuideZoneByPositionProps {
   zone: number
+  tourKey?: string
   isTourGuide?: boolean
   top?: number | string
   left?: number | string
@@ -18,11 +19,13 @@ export interface TourGuideZoneByPositionProps {
   keepTooltipPosition?: boolean
   tooltipBottomOffset?: number
   text?: string
+  title?: string
 }
 
 export const TourGuideZoneByPosition = ({
   isTourGuide,
   zone,
+  tourKey = '_default',
   width,
   height,
   top,
@@ -35,6 +38,7 @@ export const TourGuideZoneByPosition = ({
   tooltipBottomOffset,
   borderRadiusObject,
   text,
+  title,
 }: TourGuideZoneByPositionProps) => {
   if (!isTourGuide) {
     return null
@@ -48,12 +52,14 @@ export const TourGuideZoneByPosition = ({
       <TourGuideZone
         isTourGuide
         {...{
+          tourKey,
           zone,
           shape,
           keepTooltipPosition,
           tooltipBottomOffset,
           borderRadiusObject,
           text,
+          title,
         }}
         style={{
           position: 'absolute',

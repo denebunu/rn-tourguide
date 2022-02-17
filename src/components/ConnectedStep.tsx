@@ -7,7 +7,9 @@ declare var __TEST__: boolean
 interface Props {
   name: string
   text: string
+  title: string
   order: number
+  tourKey: string
   active?: boolean
   shape?: Shape
   context: ITourGuideContext
@@ -50,7 +52,7 @@ export class ConnectedStep extends React.Component<Props> {
 
   register() {
     if (this.props.context && this.props.context.registerStep) {
-      this.props.context.registerStep({
+      this.props.context.registerStep(this.props.tourKey, {
         target: this,
         wrapper: this.wrapper,
         ...this.props,
@@ -61,8 +63,8 @@ export class ConnectedStep extends React.Component<Props> {
   }
 
   unregister() {
-    if (this.props.context.unregisterStep) {
-      this.props.context.unregisterStep(this.props.name)
+    if (this.props.context && this.props.context.unregisterStep) {
+      this.props.context.unregisterStep(this.props.tourKey, this.props.name)
     } else {
       console.warn('unregisterStep undefined')
     }
@@ -70,7 +72,7 @@ export class ConnectedStep extends React.Component<Props> {
 
   measure() {
     if (typeof __TEST__ !== 'undefined' && __TEST__) {
-      return new Promise((resolve) =>
+      return new Promise(resolve =>
         resolve({
           x: 0,
           y: 0,
@@ -84,6 +86,7 @@ export class ConnectedStep extends React.Component<Props> {
       const measure = () => {
         // Wait until the wrapper element appears
         if (this.wrapper && this.wrapper.measure) {
+          const { borderRadius } = this.props
           this.wrapper.measure(
             (
               _ox: number,
@@ -94,9 +97,9 @@ export class ConnectedStep extends React.Component<Props> {
               y: number,
             ) =>
               resolve({
-                x,
+                x: borderRadius ? x + borderRadius : x,
                 y,
-                width,
+                width: borderRadius ? width - borderRadius * 2 : width,
                 height,
               }),
             reject,

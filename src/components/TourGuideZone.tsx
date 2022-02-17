@@ -6,8 +6,10 @@ import { Wrapper } from './Wrapper'
 
 export interface TourGuideZoneProps {
   zone: number
+  tourKey?: string
   isTourGuide?: boolean
   text?: string
+  title?: string
   shape?: Shape
   maskOffset?: number
   borderRadius?: number
@@ -20,10 +22,12 @@ export interface TourGuideZoneProps {
 
 export const TourGuideZone = ({
   isTourGuide = true,
+  tourKey = '_default',
   zone,
   children,
   shape,
   text,
+  title,
   maskOffset,
   borderRadius,
   style,
@@ -38,9 +42,11 @@ export const TourGuideZone = ({
   return (
     <Step
       text={text ?? `Zone ${zone}`}
+      title={title ?? `Zone ${zone}`}
       order={zone}
       name={`${zone}`}
       {...{
+        tourKey,
         shape,
         maskOffset,
         borderRadius,
